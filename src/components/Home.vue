@@ -39,6 +39,7 @@
               rounded="lg"
               color="#92bfbd52"
           >
+            {{ classes }}
           </v-sheet>
         </v-col>
       </v-row>
@@ -48,18 +49,18 @@
 </template>
 
 <script>
-import axios from "axios";
+import client from "../api/http-client";
 
 export default {
 	data() {
 		return {
-			info: null
+			classes: null
 		};
 	},
 	mounted() {
-		axios
-				.get('')
-				.then(response => (this.info = response));
+		client
+				.get('classes')
+				.then(response => (this.classes = response));
 	}
 }
 </script>

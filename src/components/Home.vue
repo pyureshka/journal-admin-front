@@ -20,14 +20,11 @@
         <v-col cols="2">
           <v-sheet rounded="lg">
             <v-list color="#92bfbd52" rounded="lg">
-              <v-list-item link="">
+              <v-list-item router-link to="/classes">
                   <v-list-item-title>Классы</v-list-item-title>
               </v-list-item>
-	            <v-list-item link="">
+	            <v-list-item router-link to="/subjects">
 		              <v-list-item-title>Предметы</v-list-item-title>
-	            </v-list-item>
-	            <v-list-item link="">
-	              <v-list-item-title>Ученики</v-list-item-title>
 	            </v-list-item>
             </v-list>
           </v-sheet>
@@ -39,7 +36,7 @@
               rounded="lg"
               color="#92bfbd52"
           >
-            {{ classes }}
+          <router-view/>
           </v-sheet>
         </v-col>
       </v-row>
@@ -49,22 +46,4 @@
 </template>
 
 <script>
-import client from "../api/http-client";
-
-export default {
-	data() {
-		return {
-			classes: null
-		};
-	},
-	mounted() {
-		client
-				.get('classes')
-				.then(response => (this.classes = response));
-	}
-}
 </script>
-
-<style lang="scss">
-
-</style>

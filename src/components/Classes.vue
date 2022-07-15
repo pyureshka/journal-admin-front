@@ -8,6 +8,9 @@
     <th class="text-left">
       Литер
     </th>
+    <th class="text-left">
+      Открыть
+    </th>
   </tr>
   </thead>
     <tbody>
@@ -15,8 +18,19 @@
         v-for="item in classes"
         :key="item.id"
     >
-        <td>{{ item.number }}</td>
-        <td>{{ item.liter }}</td>
+      <td>{{ item.number }}</td>
+      <td>{{ item.liter }}</td>
+      <td>
+        <router-link :to="'/'+item.id">
+          <v-btn
+          variant="outlined"
+          icon=""
+          color="secondary"
+          >
+          <v-icon>mdi-eye</v-icon>
+          </v-btn>
+        </router-link>
+      </td>
     </tr>
     </tbody>
   </v-table>

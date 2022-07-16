@@ -1,59 +1,41 @@
 <template>
-  <v-table>
-    <thead>
-  <tr>
-    <th class="text-left">
-      Класс
-    </th>
-    <th class="text-left">
-      Литер
-    </th>
-    <th class="text-left">
-      Открыть
-    </th>
-  </tr>
-  </thead>
-    <tbody>
-    <tr
-        v-for="item in classes"
-        :key="item.id"
-    >
-      <td>{{ item.number }}</td>
-      <td>{{ item.liter }}</td>
-      <td>
-        <router-link :to="'/'+item.id">
+  <v-container >
+    <v-table>
+      <thead>
+      <tr>
+        <th>Класс</th>
+        <th>Литер</th>
+        <th>Открыть</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr
+          v-for="item in classes"
+          :key="item.id"
+      >
+        <td>{{ item.number }}</td>
+        <td>{{ item.liter }}</td>
+        <td>
           <v-btn
-          variant="outlined"
-          icon=""
-          color="secondary"
+              variant="outlined"
+              icon=""
+              color="grey darken-1"
+              router-link :to="'/'+item.id"
           >
-          <v-icon>mdi-eye</v-icon>
+            <v-icon>mdi-eye</v-icon>
           </v-btn>
-        </router-link>
-      </td>
-    </tr>
-    </tbody>
-  </v-table>
+        </td>
+      </tr>
+      </tbody>
+    </v-table>
+  </v-container>
 </template>
 
-<script>
-import client from "../api/http-client";
+<script setup>
+import { useClasses } from "../composables/useClasses";
 
-export default {
-  name: "Classes",
-  data() {
-    return {
-      classes: null
-    };
-  },
-  mounted() {
-    client
-        .get('classes')
-        .then(response => (this.classes = response.data));
-  },
-  methods: {
-  }
-}
+const { classesB: classes } = useClasses()
 </script>
 
 <style scoped>

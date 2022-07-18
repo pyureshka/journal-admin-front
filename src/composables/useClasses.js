@@ -1,5 +1,5 @@
 import client from "../api/http-client";
-import {onBeforeUnmount, onMounted} from "vue";
+import { onMounted} from "vue";
 
 function getClasses() {
     return client
@@ -9,27 +9,12 @@ function getClasses() {
 
 export function useClasses() {
     let classes = $ref(null)
-    let classesB = $computed(() => classes?.filter(c => c.liter === "В"))
 
-    let updateInterval = null
-
-    function updateClasses() {
-        updateInterval = setInterval(async () => {
-            classes = await getClasses()
-        }, 1 * 1000)
-    }
-
-    onMounted(async () => {
+    onMounted( async () => {
         classes = await getClasses()
-        updateClasses()
-    })
-
-    onBeforeUnmount(() => {
-        clearInterval(updateInterval)
     })
 
     return $$({
-        classes,
-        classesB
+        classes
     })
 }

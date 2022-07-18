@@ -35,7 +35,7 @@
 <script setup>
 import { useClasses } from "../composables/useClasses";
 
-const { classesB: classes } = useClasses()
+const { classes } = useClasses()
 </script>
 
 <style scoped>

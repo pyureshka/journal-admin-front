@@ -1,57 +1,64 @@
 <template>
-  <v-table>
-    <thead>
-    <tr>
-      <th class="text-left">
-        Имя
-      </th>
-      <th class="text-left">
-        Фамилия
-      </th>
-      <th class="text-left">
-        Открыть
-      </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr
-        v-for="item in students"
-        :key="item.id"
-    >
-      <td>{{ item.firstName }}</td>
-      <td>{{ item.lastName }}</td>
-      <td>
-        <router-link to="">
+
+  <v-container>
+    <v-table >
+      <thead>
+      <tr>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Открыть</th>
+        <th>Редактировать</th>
+        <th>Удалить</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr
+          v-for="item in students"
+          :key="item.id"
+      >
+        <td>{{ item.firstName }}</td>
+        <td>{{ item.lastName }}</td>
+        <td>
           <v-btn
               variant="outlined"
               icon=""
-              color="secondary"
+              color="grey darken-1"
+              router-link :to="'/'+item.id"
           >
             <v-icon>mdi-eye</v-icon>
           </v-btn>
-        </router-link>
-      </td>
-    </tr>
-    </tbody>
-  </v-table>
+        </td>
+        <td>
+          <v-btn
+              variant="outlined"
+              icon=""
+              color="grey darken-1"
+              router-link :to="'/'"
+          >
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+        </td>
+        <td>
+          <v-btn
+              variant="outlined"
+              icon=""
+              color="grey darken-1"
+              router-link :to="'/'"
+          >
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </td>
+      </tr>
+      </tbody>
+    </v-table>
+  </v-container>
 </template>
 
-<script>
-import client from "../api/http-client";
+<script setup>
+import {useStudents} from "../composables/useStudents";
 
-export default {
-  name: "Students",
-    data() {
-      return {
-        students: null
-      };
-    },
-    mounted() {
-      client
-          .get('students?classId='+this.$route.params.id)
-          .then(response => (this.students = response.data));
-    }
-}
+const { students } = useStudents()
 </script>
 
 <style scoped>

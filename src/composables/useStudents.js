@@ -1,25 +1,29 @@
 import client from "../api/http-client";
-import {onMounted} from "vue";
+import {watch} from "vue";
 
-function getStudents() {
+function getStudents(classId) {
     return client
-        .get('students?classId='+this.$route.params.id)
+        .get('students?classId=' + classId)
         .then(response => response.data);
 }
-function deleteStudent(id) {
-    return client
+function deleteStudent(id, classId) {
+    client
         .delete('students/'+id)
         .then(response =>  response.data)
+    return client
+        .get('students?classId=' + classId)
+        .then(response => response.data);
 }
 
-export function useStudents() {
+export function useStudents(classRef) {
     let students = $ref(null)
 
-    onMounted(async () => {
-        students = await getStudents()
+    watch(classRef, async (c) => {
+        students = await getStudents(c.id)
     })
 
     return $$({
-        students
+        students,
+        deleteStudent
     })
 }

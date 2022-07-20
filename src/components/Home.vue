@@ -1,7 +1,6 @@
 <template>
   <v-app-bar
       app
-      color="#92bfbd52"
       flat
   >
     <v-container class="py-0 fill-height">
@@ -13,37 +12,33 @@
     </v-container>
   </v-app-bar>
 
-  <v-main>
+  <v-main class="main">
     <v-container>
-
       <v-row>
         <v-col cols="2">
-          <v-sheet rounded="lg">
-            <v-list color="#92bfbd52" rounded="lg">
-              <v-list-item router-link to="/classes">
-                  <v-list-item-title>Классы</v-list-item-title>
-              </v-list-item>
-	            <v-list-item router-link to="/subjects">
-		              <v-list-item-title>Предметы</v-list-item-title>
-	            </v-list-item>
-            </v-list>
-          </v-sheet>
+          <v-list rounded="lg">
+            <v-list-item router-link to="/students">
+              <v-list-item-title>Ученики</v-list-item-title>
+            </v-list-item>
+            <v-list-item router-link to="/subjects">
+              <v-list-item-title>- Предметы -</v-list-item-title>
+            </v-list-item>
+          </v-list>
         </v-col>
 
         <v-col>
-          <v-sheet
-              min-height="70vh"
-              rounded="lg"
-              color="#92bfbd52"
-          >
-          <router-view/>
-          </v-sheet>
+          <router-view />
         </v-col>
       </v-row>
-
     </v-container>
   </v-main>
 </template>
 
 <script>
 </script>
+
+<style scoped>
+.main {
+  background-color: #dbdcff;
+}
+</style>

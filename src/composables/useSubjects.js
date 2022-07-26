@@ -1,17 +1,17 @@
 import client from "../api/http-client";
-import {onMounted} from "vue";
+import {watch} from "vue";
 
-function getSubjects() {
+function getSubjects(classId) {
     return client
-        .get('subjects')
-        .then(response =>  response.data);
+        .get('subjects?classId=' + classId)
+        .then(response => response.data);
 }
 
-export function useSubjects() {
+export function useSubjects(classRef) {
     let subjects = $ref(null)
 
-    onMounted(async () => {
-        subjects = await getSubjects()
+    watch(classRef, async (c) => {
+        subjects = await getSubjects(c.id)
     })
 
     return $$({

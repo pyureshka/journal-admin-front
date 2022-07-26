@@ -15,17 +15,6 @@
   <v-main class="main">
     <v-container>
       <v-row>
-        <v-col cols="2">
-          <v-list rounded="lg">
-            <v-list-item router-link to="/students">
-              <v-list-item-title>Ученики</v-list-item-title>
-            </v-list-item>
-            <v-list-item router-link to="/subjects">
-              <v-list-item-title>- Предметы -</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-col>
-
         <v-col>
           <router-view />
         </v-col>

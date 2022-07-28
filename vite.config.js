@@ -1,17 +1,19 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-
-// https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
-import vuetify from 'vite-plugin-vuetify'
+import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
+	plugins: [
 		vue({
+			template: { transformAssetUrls },
 			reactivityTransform: true
 		}),
-		vuetify({ autoImport: true }),
-],
+
+		quasar({
+			sassVariables: 'src/quasar-variables.sass'
+		})
+	],
 
 	server: {
 		proxy: {
@@ -22,6 +24,4 @@ export default defineConfig({
 			}
 		}
 	}
-
-
 })

@@ -1,104 +1,11 @@
-<link rel="stylesheet" href="../styles/style.css">
 <template>
-  <v-container>
-      <v-toolbar rounded="lg">
-          <v-col cols="2">
-            <v-select
-                variant="solo"
-                density="compact"
-                hide-details
-                :items="classes"
-                :item-title="(c) => c.number + ' ' + c.liter"
-                :item-value="(c) => c"
-                v-model="selectedClass"
-            />
-          </v-col>
+<q-page>
+  <q-toolbar>
+    <q-select v-model="selectedClass" :options="classes" label="Класс" />
+    <q-select v-model="selectedSubject" :options="subjects" label="Предмет" />
 
-          <v-col cols="3">
-            <v-select
-                variant="solo"
-                density="compact"
-                hide-details
-                :items="subjects"
-                :item-title="(s) => s.title"
-                :item-value="(s) => s"
-                v-model="selectedSubject"
-            />
-          </v-col>
-        <v-col cols="3">
-          <v-date-picker
-              v-model="selectedMonth"
-              type="month"
-          ></v-date-picker>
-        </v-col>
-        <v-col cols="3">
-          <v-select
-              variant="solo"
-              hide-details
-              density="compact"
-              :items="month"
-              :item-title="(m) => m"
-              :item-value="(m) => m"
-              v-model="selectedMonth"
-          />
-        </v-col>
-      </v-toolbar>
-
-    <br>
-    <v-sheet rounded="lg">
-      <v-table density="compact">
-        <thead>
-          <tr>
-            <th>имя</th>
-            <th>фамилия</th>
-            <th/>
-            <th/>
-            <th/>
-            <th v-for="date in dates" :key="date">{{ date }}</th>
-          </tr>
-        </thead>
-
-        <tbody>
-        <tr
-            v-for="item in students"
-            :key="item.id"
-        >
-          <td>{{ item.firstName }}</td>
-          <td>{{ item.lastName }}</td>
-          <td>
-            <v-btn
-                variant="outlined"
-                icon=""
-                color="grey darken-1"
-            >
-              <v-icon>mdi-eye</v-icon>
-            </v-btn>
-          </td>
-          <td>
-            <v-btn
-                variant="outlined"
-                icon=""
-                color="grey darken-1"
-            >
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-          </td>
-          <td>
-            <v-btn
-                variant="outlined"
-                icon=""
-                color="grey darken-1"
-                @click="deleteStudent(item.id)"
-            >
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </td>
-          <td></td>
-        </tr>
-        </tbody>
-      </v-table>
-    </v-sheet>
-  </v-container>
+  </q-toolbar>
+</q-page>
 </template>
 
 <script setup>

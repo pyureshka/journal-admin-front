@@ -22,6 +22,10 @@ export function useStudents(classRef) {
         students = await getStudents(c.id)
     })
 
+    async function deleteAndUpdate(id, classId) {
+        students = await deleteStudent(id, classId)
+    }
+
     return $$({
         students,
         deleteStudent

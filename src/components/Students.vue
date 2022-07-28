@@ -6,6 +6,7 @@
             <v-select
                 variant="solo"
                 density="compact"
+                hide-details
                 :items="classes"
                 :item-title="(c) => c.number + ' ' + c.liter"
                 :item-value="(c) => c"
@@ -17,16 +18,28 @@
             <v-select
                 variant="solo"
                 density="compact"
+                hide-details
                 :items="subjects"
-                :item-title="(c) => c.title"
-                :item-value="(c) => c"
+                :item-title="(s) => s.title"
+                :item-value="(s) => s"
                 v-model="selectedSubject"
             />
           </v-col>
         <v-col cols="3">
+          <v-date-picker
+              v-model="selectedMonth"
+              type="month"
+          ></v-date-picker>
+        </v-col>
+        <v-col cols="3">
           <v-select
               variant="solo"
+              hide-details
               density="compact"
+              :items="month"
+              :item-title="(m) => m"
+              :item-value="(m) => m"
+              v-model="selectedMonth"
           />
         </v-col>
       </v-toolbar>
@@ -96,12 +109,15 @@ import {useGrades} from "../composables/useGrades";
 
 let selectedClass = $ref(null)
 let selectedSubject = $ref(null)
+let selectedMonth = $ref(null)
 
 const { students, deleteStudent } = useStudents($$(selectedClass))
 const { classes } = $(useClasses())
 const { subjects } = $(useSubjects($$(selectedClass)))
-// !
-const { getGrades, dates} = $(useGrades())
+
+const month = []
+
+// const { years, month } = $(useGrades($$(selectedYear)))
 
 </script>
 

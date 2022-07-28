@@ -4,7 +4,7 @@ import Subjects from "../components/Subjects.vue";
 import Students from "../components/Students.vue";
 
 const routes = [
-    { path: '/students', component: Students},
+    { path: '/', component: Students},
     { path: '/subjects', component: Subjects},
 ]
 

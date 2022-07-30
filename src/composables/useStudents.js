@@ -6,6 +6,7 @@ function getStudents(classId) {
         .get('students?classId=' + classId)
         .then(response => response.data);
 }
+
 function deleteStudent(id, classId) {
     client
         .delete('students/'+id)
@@ -13,6 +14,12 @@ function deleteStudent(id, classId) {
     return client
         .get('students?classId=' + classId)
         .then(response => response.data);
+}
+
+function getClassAndGrades(classId, subId, period) {
+    return client
+        .get('/students/grades?classId='+ classId +'&subjectId='+ subId +'&period=' + period)
+        .then(response => response.data)
 }
 
 export function useStudents(classRef) {
@@ -28,6 +35,6 @@ export function useStudents(classRef) {
 
     return $$({
         students,
-        deleteStudent
+        getClassAndGrades
     })
 }

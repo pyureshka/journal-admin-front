@@ -63,7 +63,7 @@ let selectedDate = $ref(null)
 let showDatePicker= $ref(false)
 let rDate = $ref(null)
 
-const {students, deleteStudent} = useStudents($$(selectedClass))
+const {students, getClassAndGrades} = useStudents($$(selectedClass))
 const {classes} = $(useClasses())
 const {subjects} = $(useSubjects($$(selectedClass)))
 
@@ -73,6 +73,7 @@ const month = []
 function onDatepickerUpdate(_v,reason) {
   rDate.setView('Months')
   if(reason==='month') showDatePicker = false
+  getClassAndGrades(selectedClass.id,selectedSubject.id,selectedDate)
 }
 
 </script>

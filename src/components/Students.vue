@@ -18,15 +18,15 @@
             style="cursor: pointer"
             label="Период" stack-label
             >
-          <q-menu>
+          <q-menu v-model="showDatePicker">
             <q-date v-model="selectedDate"
                     minimal
                     default-view="Months"
                     years-in-month-view
                     emit-immediately
-                    mask="YYYY/MM"
+                    mask="YYYY-MM"
                     ref="rDate"
-                    @update:model-value="$refs.rDate.setView('Months')"
+                    @update:model-value="onDatepickerUpdate"
             ></q-date>
           </q-menu>
           {{ selectedDate }}
@@ -60,6 +60,8 @@ import {useGrades} from "../composables/useGrades";
 let selectedClass = $ref(null)
 let selectedSubject = $ref(null)
 let selectedDate = $ref(null)
+let showDatePicker= $ref(false)
+let rDate = $ref(null)
 
 const {students, deleteStudent} = useStudents($$(selectedClass))
 const {classes} = $(useClasses())
@@ -68,6 +70,10 @@ const {subjects} = $(useSubjects($$(selectedClass)))
 const month = []
 
 // const { years, month } = $(useGrades($$(selectedYear)))
+function onDatepickerUpdate(_v,reason) {
+  rDate.setView('Months')
+  if(reason==='month') showDatePicker = false
+}
 
 </script>
 

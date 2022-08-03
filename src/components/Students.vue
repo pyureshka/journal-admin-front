@@ -1,20 +1,18 @@
 <template>
   <q-page class="q-pa-sm">
+
     <div class="row">
       <q-toolbar>
         <q-select v-model="selectedClass" :options="classes"
                   class="col-4"
                   option-value="id"
                   :option-label="(o) => o.number + ' ' + o.liter"
-                  label="Класс"
-        />
+                  label="Класс"/>
         <q-select v-model="selectedSubject" class="col-4"
                   :options="subjects"
                   option-value="id"
                   :option-label="(o) => o.title"
-                  label="Предмет"
-        />
-
+                  label="Предмет"/>
         <q-field
             class="col-4"
             style="cursor: pointer"
@@ -33,7 +31,6 @@
           </q-menu>
           {{ selectedDate }}
         </q-field>
-
       </q-toolbar>
     </div>
 
@@ -41,16 +38,18 @@
         <q-card-section >
           <div class="q-pa-md">
             <q-markup-table>
-              <thead>
+              <thead class="bg-light-green-2">
               <tr>
-                <th>Фамилия Имя</th>
-                <th v-for="day in getDays(selectedDate)">{{ day }}</th>
+                <th class="sticky">Фамилия Имя</th>
+                <th v-for="day in getDays(selectedDate)">{{ new Date(day).getDate() }}</th>
               </tr>
               </thead>
               <tbody>
-              <tr v-for="item in students" :key="item.student.id">
-                <td>{{ item.student.lastName + ' ' + item.student.firstName }}</td>
-                <td v-for="day in getDays(selectedDate)"> {{ getGrades(item,day,selectedDate) }} </td>
+              <tr v-for="(row, i) in students" :key="row.student.id">
+                <td class="sticky">{{ row.student.lastName + ' ' + row.student.firstName }}</td>
+                <td v-for="(date, j) in getDays(selectedDate)" :class="`grade-${row.grades[date]?.grade}`">
+                  <q-select :model-value="Number(row.grades[date]?.grade) || '-'" :options="[1,2,3,4,5]" @update:model-value="updateGrade($event, row.grades[date])"  />
+                </td>
               </tr>
               </tbody>
             </q-markup-table>
@@ -62,49 +61,89 @@
 </template>
 
 <script setup>
+import {watch} from "vue"
 import {useStudents} from "../composables/useStudents";
 import {useClasses} from "../composables/useClasses";
 import {useSubjects} from "../composables/useSubjects";
+import {useGrades} from "../composables/useGrades";
 
 let selectedClass = $ref(null)
 let selectedSubject = $ref(null)
-let selectedDate = $ref(null)
+let selectedDate = $ref(new Date().toISOString().slice(0,7))
 let showDatePicker= $ref(false)
 let rDate = $ref(null)
 
-const {getClassAndGrades} = useStudents($$(selectedClass))
-const {classes} = $(useClasses())
-const {subjects} = $(useSubjects($$(selectedClass)))
+const { getClassAndGrades } = useStudents($$(selectedClass))
+const { classes } = $(useClasses())
+const { subjects } = $(useSubjects($$(selectedClass)))
+const { updGrade } = $(useGrades())
 let students = $ref([])
-let grade = $ref(null)
+// let grade = $ref(null)
+
+watch(() => classes, classes => {
+  selectedClass = classes[0]
+})
+
+watch(() => subjects, async subjects => {
+  selectedSubject= subjects[0]
+  students = await getClassAndGrades(selectedClass.id,selectedSubject.id,selectedDate)
+})
+
 
 async function onDatepickerUpdate(_v,reason) {
   rDate.setView('Months')
-  if(reason==='month') showDatePicker = false
+  if(reason==='month')
+    showDatePicker = false
   students = await getClassAndGrades(selectedClass.id,selectedSubject.id,selectedDate)
 }
+
 function getDays() {
-  let newDate = new Date(selectedDate)
-  let lastDay = new Date(newDate.getFullYear(), newDate.getMonth()+1, 0).getDate()
-  let daysArr = []
-  let c = 0
-  for(let i = 1; i <= lastDay; i++) {
-    daysArr[c] = i
-    c++
+  const date = new Date(selectedDate)
+  const month = date.getMonth()
+  const dates = []
+
+  while (date.getMonth() === month) {
+    dates.push(date.toISOString().slice(0,10))
+    date.setDate(date.getDate() + 1)
   }
-  return daysArr
+
+  return dates
 }
-// !
-function getGrades(item, day, selectedDate) {
-  grade = item.grades.find(g => g.date === (selectedDate+'-'+day))
-  if(grade == null)
-    return '-'
-  else
-    return grade.grade
+
+function updateGrade(newValue, grade) {
+  debugger
 }
 
 </script>
 
 <style scoped>
+.grade-5{
+background-color: #6ba26b;
+}
+.grade-1{
+   background-color: #c72b2b;
+}
+
+thead,
+tbody,
+tfoot,
+tr,
+th,
+td {
+}
+
+.sticky {
+  position: sticky;
+  background-color: inherit;
+  background-color: white;
+
+  z-index: 3;
+  left: 0;
+}
+
+th.sticky {
+  background-color: #dcedc8;
+}
+
 
 </style>

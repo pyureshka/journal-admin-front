@@ -8,7 +8,7 @@ function getClasses() {
 }
 
 export function useClasses() {
-    let classes = $ref(null)
+    let classes = $ref([])
 
     onMounted( async () => {
         classes = await getClasses()

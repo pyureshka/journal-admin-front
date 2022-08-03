@@ -18,8 +18,18 @@ function deleteStudent(id, classId) {
 
 function getClassAndGrades(classId, subId, period) {
     return client
-        .get('/students/grades?classId='+ classId +'&subjectId='+ subId +'&period=' + period)
+        .get('/grades?classId='+ classId +'&subjectId='+ subId +'&period=' + period)
         .then(response => response.data)
+        .then((data) => {
+            return data.map(row => {
+                row.grades = row.grades.reduce((acc, grade) => {
+                    acc[grade.date] = grade
+                    return acc
+                }, {})
+
+                return row
+            })
+        })
 }
 
 export function useStudents(classRef) {

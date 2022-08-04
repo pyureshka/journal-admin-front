@@ -30,15 +30,15 @@
                     emit-immediately
                     mask="YYYY-MM"
                     ref="rDate"
-                    @update:model-value="onDatepickerUpdate" />
+                    @update:model-value="onDatepickerUpdate"/>
           </q-menu>
           {{ selectedDate }}
         </q-field>
 
-        <q-space />
+        <q-space/>
 
         <q-btn flat>
-          <q-icon name="mdi-plus" size="md" color="deep-purple-5" >
+          <q-icon name="mdi-plus" size="md" color="deep-purple-5">
             <q-menu>
               <q-list>
                 <q-item clickable v-close-popup>
@@ -74,22 +74,22 @@
                 <q-btn flat
                        :label="Number(row.grades[date]?.grade) || '-'"
                        :class="`grade-${row.grades[date]?.grade}`">
-                  <q-menu :model-value="row.grades[date]?.grade">
+                  <q-menu :model-value="row.grades[date]?.grade" fit>
                     <q-list>
-                      <q-item clickable v-close-popup @click="updGrade(1, row.grades[date])">
-                        <q-item-section>1</q-item-section>
+                      <q-item clickable v-close-popup @click="updGrade(1, row, date)">
+                        <q-item-section class="text-center">1</q-item-section>
                       </q-item>
-                      <q-item clickable v-close-popup @click="updGrade(2, row.grades[date])">
-                        <q-item-section>2</q-item-section>
+                      <q-item clickable v-close-popup @click="updGrade(2, row, date)">
+                        <q-item-section class="text-center">2</q-item-section>
                       </q-item>
-                      <q-item clickable v-close-popup @click="updGrade(3, row.grades[date])">
-                        <q-item-section>3</q-item-section>
+                      <q-item clickable v-close-popup @click="updGrade(3, row, date)">
+                        <q-item-section class="text-center">3</q-item-section>
                       </q-item>
-                      <q-item clickable v-close-popup @click="updGrade(4, row.grades[date])">
-                        <q-item-section>4</q-item-section>
+                      <q-item clickable v-close-popup @click="updGrade(4, row, date)">
+                        <q-item-section class="text-center">4</q-item-section>
                       </q-item>
-                      <q-item clickable v-close-popup @click="updGrade(5, row.grades[date])">
-                        <q-item-section>5</q-item-section>
+                      <q-item clickable v-close-popup @click="updGrade(5, row, date)">
+                        <q-item-section class="text-center">5</q-item-section>
                       </q-item>
                       <q-item clickable v-close-popup @click="onDeleteGrade(row.grades[date])">
                         <q-item-section>
@@ -126,7 +126,7 @@ let rDate = $ref(null)
 const {getClassAndGrades} = useStudents($$(selectedClass))
 const {classes} = $(useClasses())
 const {subjects} = $(useSubjects($$(selectedClass)))
-const {updateGrade, deleteGrade} = $(useGrades())
+const {updateGrade, deleteGrade, createGrade} = $(useGrades())
 let students = $ref([])
 
 watch(() => classes, classes => {
@@ -158,14 +158,26 @@ function getDays() {
   return dates
 }
 
-async function updGrade(newValue, grade) {
-  grade.grade = newValue
-  await updateGrade(grade, grade.id)
-  students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
+async function updGrade(newValue, row, date) {
+  const grade = row.grades[date]
+  if (grade?.grade) {
+    grade.grade = newValue
+    await updateGrade(grade, grade.id)
+    students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
+  } else {
+    let obj = {
+      grade: newValue,
+      date: date,
+      student: row.student,
+      subject: selectedSubject
+    }
+    await createGrade(obj)
+    students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
+  }
 }
 
 async function onDeleteGrade(grade) {
-  deleteGrade(grade)
+  await deleteGrade(grade)
   students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
 }
 

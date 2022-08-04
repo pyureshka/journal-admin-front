@@ -3,17 +3,22 @@ import client from "../api/http-client";
 
 function updateGrade(grade, id) {
     return client
-        .put('/grades/'+id,grade)
+        .put('/grades/' + id, grade)
         .then(r => r.data)
 }
 
 function deleteGrade(grade) {
-    client.delete('/grades/'+grade.id)
+    client.delete('/grades/' + grade.id)
+}
+
+function createGrade(grade) {
+    return client.post('/grades/add', grade).then(r => r.data)
 }
 
 export function useGrades() {
     return $$({
         updateGrade,
-        deleteGrade
+        deleteGrade,
+        createGrade
     })
 }

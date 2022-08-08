@@ -1,6 +1,5 @@
 <template>
   <q-page class="q-pa-sm">
-
     <div class="row">
       <q-toolbar>
         <q-select v-model="selectedClass"
@@ -18,8 +17,7 @@
                   label="Предмет"/>
 
         <q-field
-            class="col-2 q-pa-sm"
-            style="cursor: pointer"
+            class="col-2 q-pa-sm cursor-pointer"
             label="Период" stack-label
         >
           <q-menu v-model="showDatePicker">
@@ -39,7 +37,7 @@
 
         <q-btn flat>
           <q-icon name="mdi-plus" size="md" color="deep-purple-5">
-            <q-menu>
+            <q-menu fit>
               <q-list>
                 <q-item clickable v-close-popup>
                   <q-item-section>класс</q-item-section>
@@ -47,8 +45,8 @@
                 <q-item clickable v-close-popup>
                   <q-item-section>предмет</q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup>
-                  <q-item-section>ученик</q-item-section>
+                <q-item @click="onCreateStudent" clickable v-close-popup>
+                  <q-item-section >ученик</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
@@ -106,7 +104,6 @@
         </div>
       </q-card-section>
     </q-card>
-
   </q-page>
 </template>
 
@@ -116,18 +113,23 @@ import {useStudents} from "../composables/useStudents";
 import {useClasses} from "../composables/useClasses";
 import {useSubjects} from "../composables/useSubjects";
 import {useGrades} from "../composables/useGrades";
+import StudentFormAdd from "../components/StudentFormAdd.vue";
+import ClassItemFormAdd from "../components/ClassItemFormAdd.vue";
+import SubjectFormAdd from "../components/StudentFormAdd.vue";
+import {useQuasar} from "quasar";
 
 let selectedClass = $ref(null)
 let selectedSubject = $ref(null)
 let selectedDate = $ref(new Date().toISOString().slice(0, 7))
 let showDatePicker = $ref(false)
 let rDate = $ref(null)
+let students = $ref([])
 
-const {getClassAndGrades} = useStudents($$(selectedClass))
+const {getClassAndGrades, createStudent} = useStudents($$(selectedClass))
 const {classes} = $(useClasses())
 const {subjects} = $(useSubjects($$(selectedClass)))
 const {updateGrade, deleteGrade, createGrade} = $(useGrades())
-let students = $ref([])
+const $q = useQuasar()
 
 watch(() => classes, classes => {
   selectedClass = classes[0]
@@ -179,6 +181,16 @@ async function updGrade(newValue, row, date) {
 async function onDeleteGrade(grade) {
   await deleteGrade(grade)
   students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
+}
+function onCreateStudent() {
+  $q.dialog({
+    component: StudentFormAdd
+  }).onOk(async data => {
+    await createStudent(data)
+    students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
+  }).onCancel(() => {
+    console.log('Cancel')
+  })
 }
 
 </script>

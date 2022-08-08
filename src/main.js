@@ -1,5 +1,5 @@
 import {createApp} from 'vue'
-import {Quasar} from 'quasar'
+import {Quasar, Dialog} from 'quasar'
 import quasarLang from 'quasar/lang/ru'
 import iconSet from 'quasar/icon-set/mdi-v6'
 
@@ -20,7 +20,7 @@ myApp
     .use(Quasar, {
         iconSet: iconSet,
         plugins: {
-
+            Dialog
         }, // import Quasar plugins and add here
         lang: quasarLang,
     })

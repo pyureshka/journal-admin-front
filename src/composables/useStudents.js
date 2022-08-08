@@ -32,6 +32,10 @@ function getClassAndGrades(classId, subId, period) {
         })
 }
 
+function createStudent(newStudent) {
+    return client.post('students/add', newStudent).then(r => r.data)
+}
+
 export function useStudents(classRef) {
     let students = $ref(null)
 
@@ -45,6 +49,7 @@ export function useStudents(classRef) {
 
     return $$({
         students,
-        getClassAndGrades
+        getClassAndGrades,
+        createStudent
     })
 }

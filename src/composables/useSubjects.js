@@ -30,6 +30,7 @@ export function useSubjects(classRef) {
     return $$({
         subjects,
         allSubjects,
+        getSubjects,
         createSubject
     })
 }

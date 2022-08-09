@@ -19,6 +19,7 @@ export function useClasses() {
 
     return $$({
         classes,
+        getClasses,
         createClass
     })
 }

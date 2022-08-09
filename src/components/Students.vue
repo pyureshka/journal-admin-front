@@ -39,10 +39,10 @@
           <q-icon name="mdi-plus" size="md" color="deep-purple-5">
             <q-menu fit>
               <q-list>
-                <q-item clickable v-close-popup>
+                <q-item @click="onCreateClassItem" clickable v-close-popup>
                   <q-item-section>класс</q-item-section>
                 </q-item>
-                <q-item clickable v-close-popup>
+                <q-item  clickable v-close-popup>
                   <q-item-section>предмет</q-item-section>
                 </q-item>
                 <q-item @click="onCreateStudent" clickable v-close-popup>
@@ -126,7 +126,7 @@ let rDate = $ref(null)
 let students = $ref([])
 
 const {getClassAndGrades, createStudent} = useStudents($$(selectedClass))
-const {classes} = $(useClasses())
+const {classes, createClass} = $(useClasses())
 const {subjects} = $(useSubjects($$(selectedClass)))
 const {updateGrade, deleteGrade, createGrade} = $(useGrades())
 const $q = useQuasar()
@@ -182,11 +182,23 @@ async function onDeleteGrade(grade) {
   await deleteGrade(grade)
   students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
 }
+
 function onCreateStudent() {
   $q.dialog({
     component: StudentFormAdd
   }).onOk(async data => {
     await createStudent(data)
+    students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
+  }).onCancel(() => {
+    console.log('Cancel')
+  })
+}
+
+function onCreateClassItem() {
+  $q.dialog({
+    component: ClassItemFormAdd
+  }).onOk(async data => {
+    await createClass(data)
     students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
   }).onCancel(() => {
     console.log('Cancel')

@@ -6,6 +6,9 @@ function getClasses() {
         .get('classes')
         .then(response => response.data);
 }
+function createClass(newClass) {
+    return client.post('classes/add', newClass).then(r => r.data)
+}
 
 export function useClasses() {
     let classes = $ref([])
@@ -15,6 +18,7 @@ export function useClasses() {
     })
 
     return $$({
-        classes
+        classes,
+        createClass
     })
 }

@@ -1,10 +1,13 @@
 <template>
-  <q-dialog v-model="confirm" persistent ref="dialogRef">
+  <q-dialog v-model="confirm" ref="dialogRef">
     <q-card class="q-dialog-plugin">
       <q-form
         @submit="onOKClick"
         @reset="onDialogCancel"
       >
+        <q-card-section class="text-h5 text-deep-purple-5 text-center">
+          Довавить нового ученика
+        </q-card-section>
         <q-card-section class="row items-center">
           <q-input v-model="enteredFirstName"
                    label="Имя"

@@ -42,7 +42,7 @@
                 <q-item @click="onCreateClassItem" clickable v-close-popup>
                   <q-item-section>класс</q-item-section>
                 </q-item>
-                <q-item  clickable v-close-popup>
+                <q-item @click="onCreateSubjects" clickable v-close-popup>
                   <q-item-section>предмет</q-item-section>
                 </q-item>
                 <q-item @click="onCreateStudent" clickable v-close-popup>
@@ -115,7 +115,7 @@ import {useSubjects} from "../composables/useSubjects";
 import {useGrades} from "../composables/useGrades";
 import StudentFormAdd from "../components/StudentFormAdd.vue";
 import ClassItemFormAdd from "../components/ClassItemFormAdd.vue";
-import SubjectFormAdd from "../components/StudentFormAdd.vue";
+import SubjectFormAdd from "../components/SubjectFormAdd.vue";
 import {useQuasar} from "quasar";
 
 let selectedClass = $ref(null)
@@ -127,7 +127,7 @@ let students = $ref([])
 
 const {getClassAndGrades, createStudent} = useStudents($$(selectedClass))
 const {classes, createClass} = $(useClasses())
-const {subjects} = $(useSubjects($$(selectedClass)))
+const {subjects, createSubject} = $(useSubjects($$(selectedClass)))
 const {updateGrade, deleteGrade, createGrade} = $(useGrades())
 const $q = useQuasar()
 
@@ -199,6 +199,17 @@ function onCreateClassItem() {
     component: ClassItemFormAdd
   }).onOk(async data => {
     await createClass(data)
+    students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
+  }).onCancel(() => {
+    console.log('Cancel')
+  })
+}
+
+function onCreateSubjects() {
+  $q.dialog({
+    component: SubjectFormAdd
+  }).onOk(async data => {
+    await createSubject(data)
     students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
   }).onCancel(() => {
     console.log('Cancel')

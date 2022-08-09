@@ -67,7 +67,7 @@
             </thead>
             <tbody>
             <tr v-for="(row, i) in students" :key="row.student.id">
-              <td class="sticky">{{ row.student.lastName + ' ' + row.student.firstName }}</td>
+              <td class="sticky cursor-pointer name-hover" @click="onEditStudent(row)">{{ row.student.lastName + ' ' + row.student.firstName }}</td>
               <td v-for="(date, j) in getDays(selectedDate)">
                 <q-btn flat
                        :label="Number(row.grades[date]?.grade) || '-'"
@@ -113,9 +113,10 @@ import {useStudents} from "../composables/useStudents";
 import {useClasses} from "../composables/useClasses";
 import {useSubjects} from "../composables/useSubjects";
 import {useGrades} from "../composables/useGrades";
-import StudentFormAdd from "../components/StudentFormAdd.vue";
-import ClassItemFormAdd from "../components/ClassItemFormAdd.vue";
-import SubjectFormAdd from "../components/SubjectFormAdd.vue";
+import StudentFormAdd from "./form-add/StudentFormAdd.vue";
+import ClassItemFormAdd from "./form-add/ClassItemFormAdd.vue";
+import SubjectFormAdd from "./form-add/SubjectFormAdd.vue";
+import StudentFormEdit from "../components/StudentFormEdit.vue"
 import {useQuasar} from "quasar";
 
 let selectedClass = $ref(null)
@@ -126,8 +127,8 @@ let rDate = $ref(null)
 let students = $ref([])
 
 const {getClassAndGrades, createStudent} = useStudents($$(selectedClass))
-const {classes, createClass} = $(useClasses())
-const {subjects, createSubject} = $(useSubjects($$(selectedClass)))
+let {classes, getClasses, createClass} = $(useClasses())
+let {subjects, getSubjects, createSubject} = $(useSubjects($$(selectedClass)))
 const {updateGrade, deleteGrade, createGrade} = $(useGrades())
 const $q = useQuasar()
 
@@ -199,7 +200,7 @@ function onCreateClassItem() {
     component: ClassItemFormAdd
   }).onOk(async data => {
     await createClass(data)
-    students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
+    classes = await getClasses()
   }).onCancel(() => {
     console.log('Cancel')
   })
@@ -210,7 +211,17 @@ function onCreateSubjects() {
     component: SubjectFormAdd
   }).onOk(async data => {
     await createSubject(data)
-    students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
+    subjects = await getSubjects()
+  }).onCancel(() => {
+    console.log('Cancel')
+  })
+}
+
+function onEditStudent(item) {
+  $q.dialog({
+    component: StudentFormEdit
+  }).onOk(async data => {
+
   }).onCancel(() => {
     console.log('Cancel')
   })
@@ -249,5 +260,9 @@ function onCreateSubjects() {
 
 th.sticky {
   background-color: #dcedc8;
+}
+
+.name-hover:hover {
+  background-color: rgba(220, 237, 200, 0.8);
 }
 </style>

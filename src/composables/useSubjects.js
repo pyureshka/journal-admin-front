@@ -15,6 +15,10 @@ function createSubject(newSubject) {
     return client.post('subjects/add', newSubject).then(r => r.data)
 }
 
+function editSubject(subject) {
+    return client.put('subjects/' + subject.id, subject)
+}
+
 export function useSubjects(classRef) {
     let subjects = $ref(null)
     let allSubjects = $ref([])
@@ -30,7 +34,9 @@ export function useSubjects(classRef) {
     return $$({
         subjects,
         allSubjects,
+        getAllSubjects,
         getSubjects,
-        createSubject
+        createSubject,
+        editSubject
     })
 }

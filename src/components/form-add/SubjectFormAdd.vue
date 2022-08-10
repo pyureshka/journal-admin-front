@@ -16,21 +16,9 @@
           />
         </q-card-section>
 
-        <q-card-section class="row items-center">
-          <q-select v-model="selectedClasses"
-                    :options="classes"
-                    class="col-12"
-                    option-value="id"
-                    :option-label="(o) => o.number + ' ' + o.liter"
-                    label="Классы"
-                    multiple
-                    :rules="[val => val != null || 'Обязательное поле!']"
-          />
-        </q-card-section>
-
         <q-card-actions align="center">
-          <q-btn flat label="Отмена" @click="onCancelClick" type="reset"  color="primary" />
-          <q-btn flat label="Сохранить" color="deep-purple-5" type="submit" />
+          <q-btn flat label="Отмена" @click="onCancelClick" type="reset" color="primary"/>
+          <q-btn flat label="Сохранить" @keyup.enter="onOKClick" color="deep-purple-5" type="submit"/>
         </q-card-actions>
       </q-form>
     </q-card>
@@ -39,21 +27,16 @@
 
 <script setup>
 import {useDialogPluginComponent} from "quasar";
-import {useClasses} from "../composables/useClasses";
 
 let enteredTitle = $ref(null)
-let selectedClasses = $ref([])
 
 const {dialogRef, onDialogOK, onDialogCancel} = useDialogPluginComponent()
-const {classes} = $(useClasses())
 
 function onOKClick() {
-  let newClass = {
+  let newSubject = {
     title: enteredTitle,
-    classItems: selectedClasses.map((c) => c.id)
   }
-  console.log(newClass)
-  onDialogOK(newClass)
+  onDialogOK(newSubject)
 }
 
 function onCancelClick() {

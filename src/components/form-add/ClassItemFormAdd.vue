@@ -14,7 +14,7 @@
                    class="col-5"
                    :rules="[ val => val != null || 'Обязательное поле!']"
           />
-          <q-space />
+          <q-space/>
           <q-input v-model="enteredLiter"
                    label="Буква"
                    class="col-5"
@@ -35,8 +35,8 @@
         </q-card-section>
 
         <q-card-actions align="center">
-          <q-btn flat label="Отмена" @click="onCancelClick" type="reset"  color="primary" />
-          <q-btn flat label="Сохранить" color="deep-purple-5" type="submit" />
+          <q-btn flat label="Отмена" @click="onCancelClick" type="reset" color="primary"/>
+          <q-btn flat label="Сохранить" color="deep-purple-5" type="submit"/>
         </q-card-actions>
       </q-form>
     </q-card>
@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import {useSubjects} from "../composables/useSubjects";
+import {useSubjects} from "../../composables/useSubjects";
 import {useDialogPluginComponent} from "quasar";
 
 let enteredLiter = $ref(null)

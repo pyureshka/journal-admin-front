@@ -7,13 +7,14 @@ function getStudents(classId) {
         .then(response => response.data);
 }
 
-function deleteStudent(id, classId) {
-    client
+function deleteStudent(id) {
+    return client
         .delete('students/'+id)
         .then(response =>  response.data)
-    return client
-        .get('students?classId=' + classId)
-        .then(response => response.data);
+}
+
+function editStudent(student) {
+    return client.put('/students/'+student.id, student).then(r => r.data)
 }
 
 function getClassAndGrades(classId, subId, period) {
@@ -50,6 +51,8 @@ export function useStudents(classRef) {
     return $$({
         students,
         getClassAndGrades,
-        createStudent
+        createStudent,
+        deleteStudent,
+        editStudent
     })
 }

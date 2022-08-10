@@ -126,7 +126,7 @@ let showDatePicker = $ref(false)
 let rDate = $ref(null)
 let students = $ref([])
 
-const {getClassAndGrades, createStudent} = useStudents($$(selectedClass))
+const {getClassAndGrades, createStudent, editStudent} = useStudents($$(selectedClass))
 let {classes, getClasses, createClass} = $(useClasses())
 let {subjects, getSubjects, createSubject} = $(useSubjects($$(selectedClass)))
 const {updateGrade, deleteGrade, createGrade} = $(useGrades())
@@ -219,11 +219,15 @@ function onCreateSubjects() {
 
 function onEditStudent(item) {
   $q.dialog({
-    component: StudentFormEdit
+    component: StudentFormEdit,
+    componentProps: {
+      item
+    }
   }).onOk(async data => {
-
-  }).onCancel(() => {
-    console.log('Cancel')
+    await editStudent(data)
+    students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
+  }).onCancel(async data => {
+    students = await getClassAndGrades(selectedClass.id, selectedSubject.id, selectedDate)
   })
 }
 

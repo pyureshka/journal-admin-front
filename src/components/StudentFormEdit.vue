@@ -36,9 +36,9 @@
         </q-card-section>
 
         <q-card-actions align="center">
-          <q-btn flat label="Отмена" @click="onCancelClick" type="reset"  color="primary" />
-          <q-btn flat label="Удалить" color="red" @click="deleteStudent" />
-          <q-btn flat label="Сохранить" @click="onOKClick" color="deep-purple-5" type="submit" />
+          <q-btn flat label="Отмена" color="primary" type="reset" @click="onDialogCancel"/>
+          <q-btn flat label="Удалить" color="red" @click="onDeleteStudent" v-close-popup/>
+          <q-btn flat label="Сохранить" @click="onOKClick" color="deep-purple-5" type="submit"/>
         </q-card-actions>
       </q-form>
     </q-card>
@@ -48,29 +48,30 @@
 <script setup>
 import {useDialogPluginComponent} from "quasar";
 import {useClasses} from "../composables/useClasses";
+import {useStudents} from "../composables/useStudents";
 
-let enteredFirstName = $ref(null)
-let enteredLastName = $ref(null)
-let selectedClass = $ref(null)
-
+const {deleteStudent} = $(useStudents())
 const {classes} = $(useClasses())
 const {dialogRef, onDialogOK, onDialogCancel} = useDialogPluginComponent()
+// const {item} = defineProps()
+const props = defineProps({item: Object})
 
-function deleteStudent() {
-
-}
-
-function onCancelClick() {
-  onDialogCancel()
-}
+let enteredFirstName = $ref(props.item.student.firstName)
+let enteredLastName = $ref(props.item.student.lastName)
+let selectedClass = $ref(props.item.student.classItem)
 
 function onOKClick() {
   let newStudent = {
+    id: props.item.student.id,
     firstName: enteredFirstName,
     lastName: enteredLastName,
     classItem: selectedClass
   }
   onDialogOK(newStudent)
+}
+
+function onDeleteStudent() {
+  deleteStudent(props.item.student.id)
 }
 
 </script>

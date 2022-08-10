@@ -46,7 +46,7 @@
 
 <script setup>
 
-import {useClasses} from "../composables/useClasses";
+import {useClasses} from "../../composables/useClasses";
 import {useDialogPluginComponent} from "quasar";
 
 let confirm = $ref(true)

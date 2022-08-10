@@ -9,17 +9,17 @@ function getStudents(classId) {
 
 function deleteStudent(id) {
     return client
-        .delete('students/'+id)
-        .then(response =>  response.data)
+        .delete('students/delete/' + id)
+        .then(response => response.data)
 }
 
 function editStudent(student) {
-    return client.put('/students/'+student.id, student).then(r => r.data)
+    return client.put('/students/' + student.id, student).then(r => r.data)
 }
 
 function getClassAndGrades(classId, subId, period) {
     return client
-        .get('/grades?classId='+ classId +'&subjectId='+ subId +'&period=' + period)
+        .get('/grades?classId=' + classId + '&subjectId=' + subId + '&period=' + period)
         .then(response => response.data)
         .then((data) => {
             return data.map(row => {

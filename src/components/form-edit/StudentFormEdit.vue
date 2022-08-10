@@ -37,7 +37,7 @@
 
         <q-card-actions align="center">
           <q-btn flat label="Отмена" color="primary" type="reset" @click="onDialogCancel"/>
-          <q-btn flat label="Удалить" color="red" @click="onDeleteStudent" v-close-popup/>
+          <q-btn flat label="Удалить" color="red" @click="deleteStudent(props.item.student.id)" v-close-popup/>
           <q-btn flat label="Сохранить" @click="onOKClick" color="deep-purple-5" type="submit"/>
         </q-card-actions>
       </q-form>
@@ -47,8 +47,8 @@
 
 <script setup>
 import {useDialogPluginComponent} from "quasar";
-import {useClasses} from "../composables/useClasses";
-import {useStudents} from "../composables/useStudents";
+import {useClasses} from "../../composables/useClasses";
+import {useStudents} from "../../composables/useStudents";
 
 const {deleteStudent} = $(useStudents())
 const {classes} = $(useClasses())
@@ -68,10 +68,6 @@ function onOKClick() {
     classItem: selectedClass
   }
   onDialogOK(newStudent)
-}
-
-function onDeleteStudent() {
-  deleteStudent(props.item.student.id)
 }
 
 </script>

@@ -2,8 +2,8 @@
   <q-dialog v-model="confirm" ref="dialogRef">
     <q-card class="q-dialog-plugin">
       <q-form
-        @submit="onOKClick"
-        @reset="onDialogCancel"
+          @submit="onOKClick"
+          @reset="onDialogCancel"
       >
         <q-card-section class="text-h5 text-deep-purple-5 text-center">
           Довавить нового ученика
@@ -36,8 +36,8 @@
         </q-card-section>
 
         <q-card-actions align="center">
-          <q-btn flat label="Отмена" @click="onCancelClick" type="reset"  color="primary" />
-          <q-btn flat label="Сохранить" color="deep-purple-5" type="submit" />
+          <q-btn flat label="Отмена" @click="onCancelClick" type="reset" color="primary"/>
+          <q-btn flat label="Сохранить" color="deep-purple-5" type="submit"/>
         </q-card-actions>
       </q-form>
     </q-card>

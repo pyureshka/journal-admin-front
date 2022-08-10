@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-sm">
-    <div class="row">
-      <q-toolbar>
+    <div class="row justify-center">
+      <q-toolbar class="col-10 q-ma-md">
         <q-select v-model="selectedClass"
                   :options="classes"
                   class="col-2 q-pa-sm"
@@ -46,7 +46,7 @@
                   <q-item-section>предмет</q-item-section>
                 </q-item>
                 <q-item @click="onCreateStudent" clickable v-close-popup>
-                  <q-item-section >ученик</q-item-section>
+                  <q-item-section>ученик</q-item-section>
                 </q-item>
               </q-list>
             </q-menu>
@@ -55,55 +55,59 @@
       </q-toolbar>
     </div>
 
-    <q-card class="q-ma-md" center>
-      <q-card-section>
-        <div class="q-pa-md">
-          <q-markup-table>
-            <thead class="bg-light-green-2">
-            <tr>
-              <th class="sticky">Фамилия Имя</th>
-              <th v-for="day in getDays(selectedDate)">{{ new Date(day).getDate() }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(row, i) in students" :key="row.student.id">
-              <td class="sticky cursor-pointer name-hover" @click="onEditStudent(row)">{{ row.student.lastName + ' ' + row.student.firstName }}</td>
-              <td v-for="(date, j) in getDays(selectedDate)">
-                <q-btn flat
-                       :label="Number(row.grades[date]?.grade) || '-'"
-                       :class="`grade-${row.grades[date]?.grade}`">
-                  <q-menu :model-value="row.grades[date]?.grade" fit>
-                    <q-list>
-                      <q-item clickable v-close-popup @click="updGrade(1, row, date)">
-                        <q-item-section class="text-center">1</q-item-section>
-                      </q-item>
-                      <q-item clickable v-close-popup @click="updGrade(2, row, date)">
-                        <q-item-section class="text-center">2</q-item-section>
-                      </q-item>
-                      <q-item clickable v-close-popup @click="updGrade(3, row, date)">
-                        <q-item-section class="text-center">3</q-item-section>
-                      </q-item>
-                      <q-item clickable v-close-popup @click="updGrade(4, row, date)">
-                        <q-item-section class="text-center">4</q-item-section>
-                      </q-item>
-                      <q-item clickable v-close-popup @click="updGrade(5, row, date)">
-                        <q-item-section class="text-center">5</q-item-section>
-                      </q-item>
-                      <q-item clickable v-close-popup @click="onDeleteGrade(row.grades[date])">
-                        <q-item-section>
-                          <q-icon name="mdi-close" class="text-red-7 bg-red-2"/>
-                        </q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-menu>
-                </q-btn>
-              </td>
-            </tr>
-            </tbody>
-          </q-markup-table>
-        </div>
-      </q-card-section>
-    </q-card>
+    <div class="row justify-center">
+      <q-card class="q-ma-md col-10" center>
+        <q-card-section>
+          <div class="q-pa-md">
+            <q-markup-table>
+              <thead class="bg-light-green-2">
+              <tr>
+                <th class="sticky">Фамилия Имя</th>
+                <th v-for="day in getDays(selectedDate)">{{ new Date(day).getDate() }}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(row, i) in students" :key="row.student.id">
+                <td class="sticky cursor-pointer name-hover" @click="onEditStudent(row)">
+                  {{ row.student.lastName + ' ' + row.student.firstName }}
+                </td>
+                <td v-for="(date, j) in getDays(selectedDate)">
+                  <q-btn flat
+                         :label="Number(row.grades[date]?.grade) || '-'"
+                         :class="`grade-${row.grades[date]?.grade}`">
+                    <q-menu :model-value="row.grades[date]?.grade" fit>
+                      <q-list>
+                        <q-item clickable v-close-popup @click="updGrade(1, row, date)">
+                          <q-item-section class="text-center">1</q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="updGrade(2, row, date)">
+                          <q-item-section class="text-center">2</q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="updGrade(3, row, date)">
+                          <q-item-section class="text-center">3</q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="updGrade(4, row, date)">
+                          <q-item-section class="text-center">4</q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="updGrade(5, row, date)">
+                          <q-item-section class="text-center">5</q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="onDeleteGrade(row.grades[date])">
+                          <q-item-section>
+                            <q-icon name="mdi-close" class="text-red-7 bg-red-2"/>
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-menu>
+                  </q-btn>
+                </td>
+              </tr>
+              </tbody>
+            </q-markup-table>
+          </div>
+        </q-card-section>
+      </q-card>
+    </div>
   </q-page>
 </template>
 
@@ -116,7 +120,7 @@ import {useGrades} from "../composables/useGrades";
 import StudentFormAdd from "./form-add/StudentFormAdd.vue";
 import ClassItemFormAdd from "./form-add/ClassItemFormAdd.vue";
 import SubjectFormAdd from "./form-add/SubjectFormAdd.vue";
-import StudentFormEdit from "../components/StudentFormEdit.vue"
+import StudentFormEdit from "./form-edit/StudentFormEdit.vue"
 import {useQuasar} from "quasar";
 
 let selectedClass = $ref(null)
@@ -267,6 +271,6 @@ th.sticky {
 }
 
 .name-hover:hover {
-  background-color: rgba(220, 237, 200, 0.8);
+  background-color: rgba(229, 239, 216, 0.33);
 }
 </style>

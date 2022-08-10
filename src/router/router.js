@@ -1,11 +1,12 @@
 import {createRouter, createWebHashHistory} from "vue-router/dist/vue-router";
-import Classes from "../components/Classes.vue";
+import Journal from "../components/Journal.vue";
+import Classes from "../components/Classes.vue"
 import Subjects from "../components/Subjects.vue";
-import Students from "../components/Students.vue";
 
 const routes = [
-    { path: '/', component: Students},
-    { path: '/subjects', component: Subjects},
+    {path: '/journal', component: Journal, name: 'Журнал'},
+    {path: '/classes', component: Classes, name: 'Классы'},
+    {path: '/subjects', component: Subjects, name: 'Предметы'}
 ]
 
 export const router = createRouter({

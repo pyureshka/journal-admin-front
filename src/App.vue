@@ -7,14 +7,30 @@
 
         <q-toolbar-title>
           <q-avatar></q-avatar>
-          Журнал
+          {{ title }}
         </q-toolbar-title>
       </q-toolbar>
 
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" side="left" bordered>
-      <!-- drawer content -->
+      <q-list bordered separator>
+        <q-item clickable v-ripple router-link to="/journal">
+          <q-item-section>Журнал</q-item-section>
+        </q-item>
+
+        <q-item clickable v-ripple router-link to="/classes">
+          <q-item-section>
+            <q-item-label>Классы</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable v-ripple router-link to="/subjects">
+          <q-item-section>
+            <q-item-label>Предметы</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
     </q-drawer>
 
     <q-page-container style="padding-top: 0">
@@ -26,8 +42,10 @@
 
 <script setup>
 import {ref} from 'vue'
+import {router} from "./router/router";
 
 const leftDrawerOpen = ref(false)
+let title = $ref(router.currentRoute.value.name)
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value

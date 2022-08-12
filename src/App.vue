@@ -4,13 +4,11 @@
     <q-header elevated className="bg-primary text-white" height-hint="98">
       <q-toolbar>
         <q-btn dense flat round icon="mdi-menu" @click="toggleLeftDrawer"/>
-
+        
         <q-toolbar-title>
-          <q-avatar></q-avatar>
-          {{ title }}
+          {{ rName }}
         </q-toolbar-title>
       </q-toolbar>
-
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" side="left" bordered>
@@ -41,11 +39,11 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {computed, ref} from 'vue'
 import {router} from "./router/router";
 
 const leftDrawerOpen = ref(false)
-let title = $ref(router.currentRoute.value.name)
+let rName = computed(()=>router.currentRoute.value.name)
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value

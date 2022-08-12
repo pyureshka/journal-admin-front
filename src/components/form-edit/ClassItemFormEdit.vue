@@ -30,6 +30,7 @@
                     :option-label="(o) => o.title"
                     label="Предметы"
                     multiple
+                    clearable
                     :rules="[val => val != null || 'Обязательное поле!']"
           />
         </q-card-section>
@@ -52,7 +53,8 @@ const props = defineProps({item: Object})
 let enteredLiter = $ref(props.item.liter)
 let enteredNumber = $ref(props.item.number)
 let {getSubjects} = $(useSubjects())
-let selectedSubjects = $ref(getSubjects(props.item.id))
+let selectedSubjects = $ref([])
+getSubjects(props.item.id).then(data => selectedSubjects = data)
 
 const {allSubjects} = $(useSubjects())
 const {dialogRef, onDialogOK, onDialogCancel} = useDialogPluginComponent()

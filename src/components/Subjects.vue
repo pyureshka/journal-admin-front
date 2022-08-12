@@ -22,7 +22,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(row, i) in allSubjects" :key="row.id" class="text-center">
+              <tr v-for="(row) in allSubjects" :key="row.id" class="text-center">
                 <td @click="onEditSubjects(row)" class="cursor-pointer name-hover">{{ row.title }}</td>
               </tr>
               </tbody>

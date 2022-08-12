@@ -63,15 +63,15 @@
               <thead class="bg-light-green-2">
               <tr>
                 <th class="sticky">Фамилия Имя</th>
-                <th v-for="day in getDays(selectedDate)">{{ new Date(day).getDate() }}</th>
+                <th v-for="day in getDays(selectedDate)" :key="day.id">{{ new Date(day).getDate() }}</th>
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(row, i) in students" :key="row.student.id">
+              <tr v-for="(row) in students" :key="row.student.id">
                 <td class="sticky cursor-pointer name-hover" @click="onEditStudent(row)">
                   {{ row.student.lastName + ' ' + row.student.firstName }}
                 </td>
-                <td v-for="(date, j) in getDays(selectedDate)">
+                <td v-for="(date) in getDays(selectedDate)" :key="date">
                   <q-btn flat
                          :label="Number(row.grades[date]?.grade) || '-'"
                          :class="`grade-${row.grades[date]?.grade}`">

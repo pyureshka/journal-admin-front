@@ -23,7 +23,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(row, i) in classes" :key="row.id" class="text-center name-hover cursor-pointer">
+              <tr v-for="(row) in classes" :key="row.id" class="text-center name-hover cursor-pointer">
                 <td @click="onEditClassItem(row)">{{ row.number }}</td>
                 <td @click="onEditClassItem(row)">{{ row.liter }} </td>
               </tr>

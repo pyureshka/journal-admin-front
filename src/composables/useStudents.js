@@ -38,21 +38,12 @@ function createStudent(newStudent) {
 }
 
 export function useStudents(classRef) {
-    let students = $ref(null)
-
-    watch(classRef, async (c) => {
-        students = await getStudents(c.id)
-    })
-
-    async function deleteAndUpdate(id, classId) {
-        students = await deleteStudent(id, classId)
-    }
 
     return $$({
-        students,
         getClassAndGrades,
         createStudent,
         deleteStudent,
+        getStudents,
         editStudent
     })
 }

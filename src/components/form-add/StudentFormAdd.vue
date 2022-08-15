@@ -31,6 +31,7 @@
                     option-value="id"
                     :option-label="(o) => o.number + ' ' + o.liter"
                     label="Класс"
+                    clearable
                     :rules="[val => val != null || 'Обязательное поле!']"
           />
         </q-card-section>

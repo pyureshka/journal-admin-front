@@ -80,69 +80,29 @@
                   <td class="sticky">
                     {{ row.student.lastName + " " + row.student.firstName }}
                   </td>
-                  <td v-for="date in getDays(selectedDate)" :key="date">
+                  <td
+                    v-for="date in getDays(selectedDate)"
+                    :key="date"
+                    style="font-family: monospace"
+                  >
                     <q-btn
                       flat
                       :label="Number(row.grades[date]?.grade) || '-'"
                       :class="`grade-${row.grades[date]?.grade}`"
                     >
-                      <q-menu :model-value="row.grades[date]?.grade" fit>
+                      <q-menu fit>
                         <q-list>
                           <q-item
+                            v-for="(v, i) in [1, 2, 3, 4, 5, '-']"
+                            :key="i"
                             clickable
                             v-close-popup
-                            @click="updGrade(1, row, date)"
+                            @click="changeGrade(v, row, date)"
+                            class="q-pa-sm"
+                            dense
                           >
-                            <q-item-section class="text-center"
-                              >1</q-item-section
-                            >
-                          </q-item>
-                          <q-item
-                            clickable
-                            v-close-popup
-                            @click="updGrade(2, row, date)"
-                          >
-                            <q-item-section class="text-center"
-                              >2</q-item-section
-                            >
-                          </q-item>
-                          <q-item
-                            clickable
-                            v-close-popup
-                            @click="updGrade(3, row, date)"
-                          >
-                            <q-item-section class="text-center"
-                              >3</q-item-section
-                            >
-                          </q-item>
-                          <q-item
-                            clickable
-                            v-close-popup
-                            @click="updGrade(4, row, date)"
-                          >
-                            <q-item-section class="text-center"
-                              >4</q-item-section
-                            >
-                          </q-item>
-                          <q-item
-                            clickable
-                            v-close-popup
-                            @click="updGrade(5, row, date)"
-                          >
-                            <q-item-section class="text-center"
-                              >5</q-item-section
-                            >
-                          </q-item>
-                          <q-item
-                            clickable
-                            v-close-popup
-                            @click="onDeleteGrade(row.grades[date])"
-                          >
-                            <q-item-section>
-                              <q-icon
-                                name="mdi-close"
-                                class="text-red-7 bg-red-2"
-                              />
+                            <q-item-section class="text-center">
+                              {{ v }}
                             </q-item-section>
                           </q-item>
                         </q-list>
@@ -227,16 +187,13 @@ function getDays() {
   return dates;
 }
 
-async function updGrade(newValue, row, date) {
+async function changeGrade(newValue, row, date) {
   const grade = row.grades[date];
-  if (grade?.grade) {
-    grade.grade = newValue;
-    await updateGrade(grade, grade.id);
-    students = await getClassAndGrades(
-      selectedClass.id,
-      selectedSubject.id,
-      selectedDate
-    );
+
+  if (newValue === "-") {
+    await deleteGrade(grade);
+  } else if (grade?.grade) {
+    await updateGrade({ ...grade, grade: newValue }, grade.id);
   } else {
     let obj = {
       grade: newValue,
@@ -245,16 +202,8 @@ async function updGrade(newValue, row, date) {
       subject: selectedSubject,
     };
     await createGrade(obj);
-    students = await getClassAndGrades(
-      selectedClass.id,
-      selectedSubject.id,
-      selectedDate
-    );
   }
-}
 
-async function onDeleteGrade(grade) {
-  await deleteGrade(grade);
   students = await getClassAndGrades(
     selectedClass.id,
     selectedSubject.id,

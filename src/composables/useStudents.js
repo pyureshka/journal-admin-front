@@ -10,7 +10,6 @@ function getStudents(params) {
 function deleteStudent(id) {
     return client
         .delete('students/delete/' + id)
-        .then(response => response.data)
 }
 
 function editStudent(student) {

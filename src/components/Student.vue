@@ -41,6 +41,7 @@
                 <tr>
                   <th>Фамилия</th>
                   <th>Имя</th>
+                  <th>Активность</th>
                 </tr>
               </thead>
               <tbody>
@@ -52,6 +53,20 @@
                 >
                   <td class="cursor-pointer name-hover">{{ row.lastName }}</td>
                   <td class="cursor-pointer name-hover">{{ row.firstName }}</td>
+                  <td>
+                    <q-icon
+                      v-if="row.archive === false"
+                      name="mdi-account-check-outline"
+                      color="light-green-4"
+                      size="sm"
+                    />
+                    <q-icon
+                      v-else
+                      name="mdi-account-cancel-outline"
+                      color="amber-5"
+                      size="sm"
+                    />
+                  </td>
                 </tr>
               </tbody>
             </q-markup-table>
@@ -111,7 +126,9 @@ function onEditStudent(item) {
     component: StudentFormEdit,
     componentProps: {
       item,
-      onUpdate() {},
+      async onUpdate() {
+        studentsRef = await getStudents(params);
+      },
     },
   })
     .onOk(async (data) => {
@@ -121,9 +138,5 @@ function onEditStudent(item) {
     .onCancel(async () => {
       studentsRef = await getStudents(params);
     });
-}
-
-function test() {
-  debugger;
 }
 </script>

@@ -3,13 +3,26 @@
     <div class="row justify-center">
       <q-toolbar class="col-10 q-ma-md">
         <q-select
-          v-model="selectedClass"
+          v-model="params.classId"
           :options="classes"
           class="col-2 q-pa-sm"
           option-value="id"
           :option-label="(o) => o.number + ' ' + o.liter"
+          emit-value
+          map-options
           label="Класс"
         />
+
+        <q-select
+          v-model="params.archive"
+          :options="optionsArchiveFilter"
+          class="col-2 q-pa-sm"
+          label="Ученики"
+          emit-value
+          map-options
+          clearable
+        />
+
         <q-space />
 
         <q-btn flat @click="onCreateStudent" class="text-deep-purple-5">
@@ -61,21 +74,23 @@ let selectedClass = $ref(null);
 let studentsRef = $ref([]);
 
 let { classes } = $(useClasses());
-let { createStudent, getStudents, editStudent } = useStudents(
-  $$(selectedClass)
-);
+let { params, optionsArchiveFilter, createStudent, getStudents, editStudent } =
+  $(useStudents($$(selectedClass)));
 const $q = useQuasar();
 
 watch(
   () => classes,
-  (classes) => (selectedClass = classes[0])
+  (classes) => {
+    params.classId = classes[0].id;
+  }
 );
 
 watch(
-  () => selectedClass,
-  async (c) => {
-    studentsRef = await getStudents(c.id);
-  }
+  () => params,
+  async (params) => {
+    studentsRef = await getStudents(params);
+  },
+  { deep: true }
 );
 
 function onCreateStudent() {
@@ -96,14 +111,15 @@ function onEditStudent(item) {
     component: StudentFormEdit,
     componentProps: {
       item,
+      onUpdate() {},
     },
   })
     .onOk(async (data) => {
       await editStudent(data);
-      studentsRef = await getStudents(selectedClass.id);
+      studentsRef = await getStudents(params);
     })
-    .onCancel(async (data) => {
-      studentsRef = await getStudents(selectedClass.id);
+    .onCancel(async () => {
+      studentsRef = await getStudents(params);
     });
 }
 

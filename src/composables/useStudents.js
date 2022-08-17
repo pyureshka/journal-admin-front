@@ -1,9 +1,9 @@
 import client from "../api/http-client";
-import {watch} from "vue";
+import { watch } from "vue";
 
-function getStudents(classId) {
+function getStudents(params) {
     return client
-        .get('students?classId=' + classId)
+        .get('students', { params })
         .then(response => response.data);
 }
 
@@ -38,12 +38,23 @@ function createStudent(newStudent) {
 }
 
 export function useStudents(classRef) {
+    let params = $ref({
+        archive: undefined,
+    })
+
+    let optionsArchiveFilter = [
+        { label: "Действующие", value: false },
+        { label: "Архивные", value: true },
+    ];
 
     return $$({
+        params,
+        optionsArchiveFilter,
+
         getClassAndGrades,
         createStudent,
         deleteStudent,
         getStudents,
-        editStudent
+        editStudent,
     })
 }

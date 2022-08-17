@@ -164,6 +164,17 @@ watch(
   }
 );
 
+watch(
+  () => selectedSubject,
+  async (selectedSubject) => {
+    students = await getClassAndGrades(
+      selectedClass.id,
+      selectedSubject.id,
+      selectedDate
+    );
+  }
+);
+
 async function onDatepickerUpdate(_v, reason) {
   rDate.setView("Months");
   if (reason === "month") showDatePicker = false;

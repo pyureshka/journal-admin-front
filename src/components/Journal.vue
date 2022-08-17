@@ -39,26 +39,6 @@
           </q-menu>
           {{ selectedDate }}
         </q-field>
-
-        <q-space />
-
-        <q-btn flat>
-          <q-icon name="mdi-plus" size="md" color="deep-purple-5">
-            <q-menu fit>
-              <q-list>
-                <q-item @click="onCreateClassItem" clickable v-close-popup>
-                  <q-item-section>класс</q-item-section>
-                </q-item>
-                <q-item @click="onCreateSubjects" clickable v-close-popup>
-                  <q-item-section>предмет</q-item-section>
-                </q-item>
-                <q-item @click="onCreateStudent" clickable v-close-popup>
-                  <q-item-section>ученик</q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-icon>
-        </q-btn>
       </q-toolbar>
     </div>
 
@@ -125,9 +105,6 @@ import { useStudents } from "../composables/useStudents";
 import { useClasses } from "../composables/useClasses";
 import { useSubjects } from "../composables/useSubjects";
 import { useGrades } from "../composables/useGrades";
-import StudentFormAdd from "./form-add/StudentFormAdd.vue";
-import ClassItemFormAdd from "./form-add/ClassItemFormAdd.vue";
-import SubjectFormAdd from "./form-add/SubjectFormAdd.vue";
 import { useQuasar } from "quasar";
 
 let selectedClass = $ref(null);
@@ -220,49 +197,6 @@ async function changeGrade(newValue, row, date) {
     selectedSubject.id,
     selectedDate
   );
-}
-
-function onCreateStudent() {
-  $q.dialog({
-    component: StudentFormAdd,
-  })
-    .onOk(async (data) => {
-      await createStudent(data);
-      students = await getClassAndGrades(
-        selectedClass.id,
-        selectedSubject.id,
-        selectedDate
-      );
-    })
-    .onCancel(() => {
-      console.log("Cancel");
-    });
-}
-
-function onCreateClassItem() {
-  $q.dialog({
-    component: ClassItemFormAdd,
-  })
-    .onOk(async (data) => {
-      await createClass(data);
-      classes = await getClasses();
-    })
-    .onCancel(() => {
-      console.log("Cancel");
-    });
-}
-
-function onCreateSubjects() {
-  $q.dialog({
-    component: SubjectFormAdd,
-  })
-    .onOk(async (data) => {
-      await createSubject(data);
-      subjects = await getSubjects();
-    })
-    .onCancel(() => {
-      console.log("Cancel");
-    });
 }
 </script>
 

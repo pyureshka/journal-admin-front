@@ -48,7 +48,7 @@
                 <tr
                   v-for="row in studentsRef"
                   :key="row.id"
-                  class="text-center"
+                  class="text-center name-hover"
                   @click="onEditStudent(row)"
                 >
                   <td class="cursor-pointer name-hover">{{ row.lastName }}</td>
@@ -57,13 +57,13 @@
                     <q-icon
                       v-if="row.archive === false"
                       name="mdi-account-check-outline"
-                      color="light-green-4"
+                      color="light-green-5"
                       size="sm"
                     />
                     <q-icon
                       v-else
                       name="mdi-account-cancel-outline"
-                      color="amber-5"
+                      color="amber-7"
                       size="sm"
                     />
                   </td>
@@ -114,7 +114,7 @@ function onCreateStudent() {
   })
     .onOk(async (data) => {
       await createStudent(data);
-      studentsRef = await getStudents(selectedClass.id);
+      studentsRef = await getStudents(params);
     })
     .onCancel(() => {
       console.log("Cancel");
@@ -140,3 +140,9 @@ function onEditStudent(item) {
     });
 }
 </script>
+
+<style scoped>
+.name-hover:hover {
+  background-color: rgba(229, 239, 216, 0.33);
+}
+</style>

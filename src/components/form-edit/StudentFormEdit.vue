@@ -59,17 +59,20 @@
             v-close-popup
           />
           <q-btn
+            v-if="(props.item.archive == false)"
             flat
             label="Архивировать"
             color="primary"
             @click="onArchive()"
           />
           <q-btn
+            v-else
             flat
-            label="Сохранить"
-            color="deep-purple-5"
-            type="submit"
+            label="Разархивировать"
+            color="primary"
+            @click="onArchive()"
           />
+          <q-btn flat label="Сохранить" color="deep-purple-5" type="submit" />
         </q-card-actions>
       </q-form>
     </q-card>
@@ -107,30 +110,34 @@
 import { useDialogPluginComponent } from "quasar";
 import { useClasses } from "../../composables/useClasses";
 import { useStudents } from "../../composables/useStudents";
-import { useGroups } from "../../composables/useGroups"
+import { useGroups } from "../../composables/useGroups";
 
 const { deleteStudent } = $(useStudents());
 const { classes } = $(useClasses());
-const { getGroupByName } = $(useGroups())
+const { getGroupByName } = $(useGroups());
 const { dialogRef, onDialogOK, onDialogCancel } = useDialogPluginComponent();
 const props = defineProps({ item: Object });
+
+const emit = defineEmits([
+  ...useDialogPluginComponent.emits, "update"
+])
 
 let enteredFirstName = $ref(props.item.firstName);
 let enteredLastName = $ref(props.item.lastName);
 let selectedClass = $ref(props.item.classItem);
 let confirm = $ref(false);
 let mainDialog = $ref(null);
-let archive = $ref(props.item.archive)
+let archive = $ref(props.item.archive);
 
 async function onOKClick() {
-  let groups = await getGroupByName("GROUP_STUDENTS")
+  let groups = await getGroupByName("GROUP_STUDENTS");
   let newStudent = {
     id: props.item.id,
     firstName: enteredFirstName,
     lastName: enteredLastName,
     classItem: selectedClass,
     archive: archive,
-    groups: [groups]
+    groups: [groups],
   };
   onDialogOK(newStudent);
   mainDialog = false;
@@ -141,10 +148,11 @@ function onCancel() {
   onDialogCancel;
 }
 
-function onDeleteStudent() {
-  deleteStudent(props.item.id);
+async function onDeleteStudent() {
+  await deleteStudent(props.item.id);
   confirm = false;
   onDialogCancel;
+  emit("update")
 }
 
 function onConfirmCancel() {
@@ -153,8 +161,8 @@ function onConfirmCancel() {
 }
 
 function onArchive() {
-  archive = !archive
-  onOKClick()
+  archive = !archive;
+  onOKClick();
 }
 </script>
 

@@ -62,13 +62,11 @@
             flat
             label="Архивировать"
             color="primary"
-            type="reset"
             @click="onArchive()"
           />
           <q-btn
             flat
             label="Сохранить"
-            @click="onOKClick"
             color="deep-purple-5"
             type="submit"
           />
@@ -90,13 +88,13 @@
             flat
             label="Отмена"
             color="deep-purple-5"
-            @click="onConfirmCancel"
+            @click="onConfirmCancel()"
           />
           <q-btn
             flat
             label="Да"
             color="red"
-            @click="onDeleteStudent"
+            @click="onDeleteStudent()"
             v-close-popup
           />
         </q-card-actions>
@@ -109,9 +107,11 @@
 import { useDialogPluginComponent } from "quasar";
 import { useClasses } from "../../composables/useClasses";
 import { useStudents } from "../../composables/useStudents";
+import { useGroups } from "../../composables/useGroups"
 
 const { deleteStudent } = $(useStudents());
 const { classes } = $(useClasses());
+const { getGroupByName } = $(useGroups())
 const { dialogRef, onDialogOK, onDialogCancel } = useDialogPluginComponent();
 const props = defineProps({ item: Object });
 
@@ -120,13 +120,17 @@ let enteredLastName = $ref(props.item.lastName);
 let selectedClass = $ref(props.item.classItem);
 let confirm = $ref(false);
 let mainDialog = $ref(null);
+let archive = $ref(props.item.archive)
 
-function onOKClick() {
+async function onOKClick() {
+  let groups = await getGroupByName("GROUP_STUDENTS")
   let newStudent = {
     id: props.item.id,
     firstName: enteredFirstName,
     lastName: enteredLastName,
     classItem: selectedClass,
+    archive: archive,
+    groups: [groups]
   };
   onDialogOK(newStudent);
   mainDialog = false;
@@ -148,7 +152,10 @@ function onConfirmCancel() {
   mainDialog = true;
 }
 
-function onArchive() {}
+function onArchive() {
+  archive = !archive
+  onOKClick()
+}
 </script>
 
 <style scoped>

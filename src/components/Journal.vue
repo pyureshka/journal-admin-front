@@ -56,9 +56,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="row in students" :key="row.student.id">
+                <tr v-for="row in students" :key="row.id">
                   <td class="sticky">
-                    {{ row.student.lastName + " " + row.student.firstName }}
+                    {{ row.lastName + " " + row.firstName }}
                   </td>
                   <td
                     v-for="date in getDays(selectedDate)"
@@ -186,7 +186,7 @@ async function changeGrade(newValue, row, date) {
     let obj = {
       grade: newValue,
       date: date,
-      student: row.student,
+      studentId: row.id,
       subject: selectedSubject,
     };
     await createGrade(obj);

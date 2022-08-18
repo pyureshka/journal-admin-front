@@ -4,15 +4,15 @@ import client from "../api/http-client";
 function updateGrade(grade, id) {
     return client
         .put('/grades/' + id, grade)
-        .then(r => r.data)
+
 }
 
 function deleteGrade(grade) {
-    client.delete('/grades/' + grade.id)
+    return client.delete('/grades/' + grade.id)
 }
 
 function createGrade(grade) {
-    return client.post('/grades/add', grade).then(r => r.data)
+    return client.post('/grades/add', grade)
 }
 
 export function useGrades() {

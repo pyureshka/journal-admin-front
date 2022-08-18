@@ -4,7 +4,7 @@ import { watch } from "vue";
 function getStudents(params) {
     return client
         .get('students', { params })
-        .then(response => response.data);
+        ;
 }
 
 function deleteStudent(id) {
@@ -13,16 +13,18 @@ function deleteStudent(id) {
 }
 
 function editStudent(student) {
-    return client.put('/students/' + student.id, student).then(r => r.data)
+    return client.put('/students/' + student.id, student)
 }
 
 function getClassAndGrades(classId, subId, period) {
     return client
         .get('/grades?classId=' + classId + '&subjectId=' + subId + '&period=' + period)
-        .then(response => response.data)
+
         .then((data) => {
             return data.map(row => {
+
                 row.grades = row.grades.reduce((acc, grade) => {
+                    grade.date = grade.date.slice(0, 10)
                     acc[grade.date] = grade
                     return acc
                 }, {})
@@ -33,7 +35,7 @@ function getClassAndGrades(classId, subId, period) {
 }
 
 function createStudent(newStudent) {
-    return client.post('students/add', newStudent).then(r => r.data)
+    return client.post('students/add', newStudent)
 }
 
 export function useStudents(classRef) {

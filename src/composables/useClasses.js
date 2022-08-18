@@ -1,18 +1,18 @@
 import client from "../api/http-client";
-import {onMounted} from "vue";
+import { onMounted } from "vue";
 
 function getClasses() {
     return client
         .get('classes')
-        .then(response => response.data);
+        ;
 }
 
 function createClass(newClass) {
-    return client.post('classes/add', newClass).then(r => r.data)
+    return client.post('classes/add', newClass)
 }
 
 function editClass(newClass) {
-    return client.put('classes/' + newClass.id, newClass).then(r => r.data)
+    return client.put('classes/' + newClass.id, newClass)
 }
 
 export function useClasses() {

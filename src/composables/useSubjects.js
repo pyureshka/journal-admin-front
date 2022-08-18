@@ -1,18 +1,17 @@
 import client from "../api/http-client";
-import {onMounted, watch} from "vue";
+import { onMounted, watch } from "vue";
 
 function getSubjects(classId) {
     return client
-        .get('subjects?classId=' + classId)
-        .then(response => response.data);
+        .get('subjects?classId=' + classId);
 }
 
 function getAllSubjects() {
-    return client.get('subjects/all').then(r => r.data)
+    return client.get('subjects/all')
 }
 
 function createSubject(newSubject) {
-    return client.post('subjects/add', newSubject).then(r => r.data)
+    return client.post('subjects/add', newSubject)
 }
 
 function editSubject(subject) {

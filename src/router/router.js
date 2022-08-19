@@ -10,7 +10,7 @@ const routes = [
     { path: '/classes', component: Classes, name: 'Классы' },
     { path: '/subjects', component: Subjects, name: 'Предметы' },
     { path: '/students', component: Students, name: 'Ученики' },
-    { path: '/auth', component: Authorization, name: 'Авторизация' }
+    { path: '/login', component: Authorization, name: 'Авторизация' }
 ]
 
 export const router = createRouter({

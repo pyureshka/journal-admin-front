@@ -1,4 +1,5 @@
 import axios from "axios";
+import { router } from "../router/router"
 
 const client = axios.create({
   baseURL: location.origin + "/api",
@@ -8,6 +9,12 @@ const client = axios.create({
 
 client.interceptors.response.use((response) => {
   return response.data
-}, (error) => { })
+}, (error) => {
+  if (error.response.status === 401) {
+    console.log(error.response.status);
+    router.push("/login")
+  }
+  return Promise.reject(error);
+})
 
 export default client

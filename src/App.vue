@@ -8,6 +8,13 @@
           <q-toolbar-title>
             {{ rName }}
           </q-toolbar-title>
+          <q-space />
+          <q-btn
+            color="deep-purple-1"
+            text-color="deep-purple-8"
+            label="выйти"
+            @click="onLogout"
+          />
         </q-toolbar>
       </q-header>
 
@@ -17,19 +24,37 @@
             <q-item-section>Журнал</q-item-section>
           </q-item>
 
-          <q-item clickable v-ripple router-link to="/classes">
+          <q-item
+            v-if="can.useClasses"
+            clickable
+            v-ripple
+            router-link
+            to="/classes"
+          >
             <q-item-section>
               <q-item-label>Классы</q-item-label>
             </q-item-section>
           </q-item>
 
-          <q-item clickable v-ripple router-link to="/subjects">
+          <q-item
+            v-if="can.useSubjects"
+            clickable
+            v-ripple
+            router-link
+            to="/subjects"
+          >
             <q-item-section>
               <q-item-label>Предметы</q-item-label>
             </q-item-section>
           </q-item>
 
-          <q-item clickable v-ripple router-link to="/students">
+          <q-item
+            v-if="can.useStudents"
+            clickable
+            v-ripple
+            router-link
+            to="/students"
+          >
             <q-item-section>
               <q-item-label>Ученики</q-item-label>
             </q-item-section>
@@ -46,11 +71,20 @@
 <script setup>
 import { computed, ref } from "vue";
 import { router } from "./router/router";
+import { useAccess } from "./composables/useAccess";
+import { useAuth } from "./composables/useAuth";
 
+let { logout } = $(useAuth());
 const leftDrawerOpen = ref(false);
+let { can } = $(useAccess());
 let rName = computed(() => router.currentRoute.value.name);
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
+}
+
+async function onLogout() {
+  await logout();
+  router.push("/login");
 }
 </script>

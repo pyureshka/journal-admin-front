@@ -43,13 +43,15 @@
 <script setup>
 import { useAuth } from "../composables/useAuth";
 import { router } from "../router/router";
+import { store } from "./Store";
 
 let log = $ref(null);
 let pwd = $ref(null);
 let { login } = $(useAuth());
+let { user } = $(store());
 
 async function onAuth(log, pwd) {
-  await login(log, pwd);
+  user = await login(log, pwd);
   router.push("/journal");
 }
 </script>

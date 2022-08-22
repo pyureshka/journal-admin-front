@@ -8,6 +8,10 @@ function login(login, pwd) {
     return client.post(`auth?login=${login}&pwd=${pwd}`, {}, { headers });
 }
 
+function logout() {
+    return client.post(`/logout`)
+}
+
 export function useAuth() {
-    return $$({ login })
+    return $$({ login, logout })
 }

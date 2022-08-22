@@ -12,7 +12,7 @@
     </div>
 
     <div class="row justify-center">
-      <q-card class="q-ma-md col-10" center>
+      <q-card class="q-ma-md col-6" center>
         <q-card-section>
           <div class="q-pa-md">
             <q-markup-table>

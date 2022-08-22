@@ -206,7 +206,7 @@ async function changeGrade(newValue, row, date) {
 }
 
 .grade-4 {
-  background-color: #b4f5b4;
+  background-color: #9cec9c;
 }
 
 .grade-3 {
@@ -218,7 +218,7 @@ async function changeGrade(newValue, row, date) {
 }
 
 .grade-1 {
-  background-color: #de3838;
+  background-color: #e24e4e;
 }
 
 .sticky {

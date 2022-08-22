@@ -16,7 +16,7 @@
         </q-card-section>
 
         <q-card-section class="text-h5 text-deep-purple-5 text-center">
-          Ученик
+          Редактировать ученика
         </q-card-section>
 
         <q-card-section class="row items-center">
@@ -59,7 +59,7 @@
             v-close-popup
           />
           <q-btn
-            v-if="(props.item.archive == false)"
+            v-if="props.item.archive == false"
             flat
             label="Архивировать"
             color="primary"
@@ -118,9 +118,7 @@ const { getGroupByName } = $(useGroups());
 const { dialogRef, onDialogOK, onDialogCancel } = useDialogPluginComponent();
 const props = defineProps({ item: Object });
 
-const emit = defineEmits([
-  ...useDialogPluginComponent.emits, "update"
-])
+const emit = defineEmits([...useDialogPluginComponent.emits, "update"]);
 
 let enteredFirstName = $ref(props.item.firstName);
 let enteredLastName = $ref(props.item.lastName);
@@ -152,7 +150,7 @@ async function onDeleteStudent() {
   await deleteStudent(props.item.id);
   confirm = false;
   onDialogCancel;
-  emit("update")
+  emit("update");
 }
 
 function onConfirmCancel() {
